@@ -1,0 +1,44 @@
+<% breadcrumb :user, @user %>
+<h1 class="title"><%= @user.name%>さんのページ</h1>
+
+<div class="profiles_wrapper">
+  <div class="avatar">
+    <% if @user.avatar.attached? %>
+      <%= link_to image_tag(@user.avatar), rails_blob_path(@user.avatar) %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), asset_url('no_image.png') %>
+    <% end %>
+  </div>
+
+  <div class="user_info">
+    <div class="name">
+      <span><%= User.human_attribute_name(:name) %></span><span><%= @user.name %></span>
+    </div>
+    <% unless current_user.id == @user.id %>
+      <%= link_to 'メッセージを送る', new_user_message_path(@user), class: 'message_button' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="posted_articles_wrapper">
+  <h2>
+    投稿した記事一覧
+    <%= link_to 'すべて見る', posted_articles_user_path(@user) %>
+  </h2>
+  <div class="articles">
+    <% @articles.each do |a| %>
+    <div class="article">
+      <% if a.images.attached? %>
+      <%= link_to image_tag(a.images.first), article_path(a), class: 'image' %>
+      <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), article_path(a), class: 'image' %>
+      <% end %>
+      <div class="overview">
+        <p><%= link_to(a.name.slice(0..15) + '...', article_path(a)) %></p>
+        <p><%= a.t_prefecture %> : <%= a.t_species %></p>
+        <p><%= a.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

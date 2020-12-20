@@ -1,0 +1,10 @@
+
+<% if fav.present? %>
+  <%= link_to article_favorite_path(art, fav), method: :delete, remote: true, class: 'favorite_button' do %>
+  <span class="material-icons">favorite</span>
+  <%end%>
+<% else %>
+  <%= link_to article_favorites_path(art), method: :post, remote: true, class: 'favorite_button' do %>
+  <span class="material-icons">favorite_border</span>
+  <%end%>
+<% end %>

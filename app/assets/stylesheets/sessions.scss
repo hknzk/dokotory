@@ -1,0 +1,95 @@
+// Place all the styles related to the Sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.sessions_new {
+  form {
+    padding: 5px;
+
+    input[type="submit"] {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      color: rgb(102, 204, 55);;
+      border: 2px solid rgb(102, 204, 55);
+      font-weight: bold;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition:  0.3s;
+      &:hover {
+        background: rgb(192, 252, 164);
+      }
+    }
+
+    .form_item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+
+      label {
+        text-align: center;
+        background: rgb(236, 154, 57);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 10px 0 0 10px;
+        width: 150px;
+        height: 25px;
+      }
+
+      input {
+        width: 200px;
+        padding: 8px;
+        border: 2px solid rgb(236, 154, 57);
+        border-radius: 0 10px 10px 0;
+      }
+    }
+  }
+}
+
+.sessions_create {
+  form {
+    padding: 5px;
+
+    input[type="submit"] {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      color: rgb(102, 204, 55);;
+      border: 2px solid rgb(102, 204, 55);
+      font-weight: bold;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition:  0.3s;
+      &:hover {
+        background: rgb(192, 252, 164);
+      }
+    }
+
+    .form_item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+
+      label {
+        text-align: center;
+        background: rgb(236, 154, 57);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 10px 0 0 10px;
+        width: 150px;
+        height: 25px;
+      }
+
+      input {
+        width: 200px;
+        padding: 8px;
+        border: 2px solid rgb(236, 154, 57);
+        border-radius: 0 10px 10px 0;
+      }
+    }
+  }
+}

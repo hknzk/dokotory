@@ -1,0 +1,38 @@
+<% breadcrumb :mypage_send_messages %>
+
+<h1 class="title">メッセージ一覧</h1>
+<div class="page_entries_info">
+  <%= page_entries_info @send_messages, entry_name: 'item' %>
+</div>
+<div class="outside">
+  <span><%= link_to '受け取ったメッセージ', mypage_received_messages_path, class: 'tab inactive' %></span><span class="tab">送ったメッセージ</span>
+
+  <table class="send_dms" border="0">
+    <tbody>
+      <% if @send_messages.present? %>
+        <% @send_messages.each do |sm| %>
+          <tr class="dm">
+            <td class="name">
+              <%= link_to sm.name, [current_user, sm]%>
+            </td>
+            <td></td>
+            <td class="contributor">
+              From : <%= sm.sender.name %>
+            </td>
+            <td></td>
+            <td class="created_at">
+              <%= sm.created_at.strftime("%Y-%m-%d %H:%M")%>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td>まだメッセージがありません</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="pagination_outside">
+  <%= paginate @send_messages %>
+</div>

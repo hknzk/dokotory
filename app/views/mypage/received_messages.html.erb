@@ -1,0 +1,39 @@
+<% breadcrumb :mypage_received_messages %>
+
+<h1 class="title">メッセージ一覧</h1>
+<div class="page_entries_info">
+  <%= page_entries_info @received_messages, entry_name: 'item' %>
+</div>
+<div class="outside">
+  <span class="tab">受け取ったメッセージ</span><span><%= link_to '送ったメッセージ', mypage_send_messages_path, class: 'tab inactive'%></span>
+  <table class="received_dms" border="0">
+    <tbody>
+      <% if @received_messages.present? %>
+        <% @received_messages.each do |rm| %>
+        <tr class="dm">
+          <td class="name">
+            <%= link_to rm.name, [current_user, rm]%>
+          </td>
+          <td></td>
+          <td class="contributor">
+            From : <%= rm.sender.name %>
+          </td>
+          <td class="created_at">
+            <%= rm.created_at.strftime("%Y-%m-%d %H:%M")%>
+          </td>
+          <td class="destroy">
+            <%= link_to '削除', user_message_path(current_user.id ,rm), method: :delete, data: {confirm: "メッセージ「#{rm.name}」を削除しますか？"} %>
+          </td>
+        </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td>まだメッセージがありません</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="pagination_outside">
+  <%= paginate @received_messages %>
+</div>

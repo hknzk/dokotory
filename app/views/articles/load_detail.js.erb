@@ -1,0 +1,27 @@
+var loadedArticle = {
+  id:'<%= @article.id %>',
+  name:'<%= @article.name %>',
+  image: '<%= @article.images.attached? ? rails_blob_path(@article.images.first) : 'none' %>',
+  created_at:'<%= @article.created_at.strftime('%Y-%m-%d %H:%M') %>',
+  species:'<%= @article.t_species %>',
+};
+var articleDetailsNode = document.getElementById('articleDetails');
+
+Object.keys(loadedArticle).forEach( key=>{
+  var id = 'a_'+ key;
+  var element = document.getElementById(id);
+  // articleDetailsNode.children[id].textContent = loadedArticle[key];
+  console.log(element.tagName);
+  if (element.tagName == 'IMG') {
+    if (loadedArticle[key] == 'none') {
+      element.src = '';
+    } else {
+      element.src = loadedArticle[key];
+    }
+  } else {
+    element.textContent = loadedArticle[key];
+  }
+});
+document.getElementById('a_link').href = '/articles/' + loadedArticle.id;
+document.querySelector('.mask').classList.add('active');
+articleDetailsNode.classList.add('active');

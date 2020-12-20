@@ -1,0 +1,30 @@
+<% breadcrumb :root %>
+
+<h1 class="title">ドコトリーへようこそ</h1>
+  <div class="page_intro">
+    ドコトリーは「小鳥」専門に迷子の情報を発信するサイトです。<br>
+    ペットの小鳥の多くは、犬猫のように野生化して生き延びることができません。<br>
+    保護されたあとも環境の変化や飼い主がいないことが、負担になってしまう個体もいます。
+    厳しい環境に晒された小鳥たちを救うには早急に保護し元の飼い主に返してあげることが大切です。
+    その一助となるために当サイトは開設されました。
+  </div>
+
+<h1 class="title">新着の記事</h1>
+  <div class="articles">
+    <% @articles.each do |a| %>
+    <div class="article">
+      <% if a.images.attached? %>
+      <%= link_to image_tag(a.images.first), article_path(a), class: 'image' %>
+      <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), article_path(a), class: 'image' %>
+      <% end %>
+      <div class="overview">
+        <p><%= link_to(a.name.slice(0..15) + '...', article_path(a)) %></p>
+        <p><%= a.t_prefecture %> : <%= a.t_species %></p>
+        <p><%= a.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+      </div>
+    </div>
+    <% end %>
+  </div>
+<h1 class="title">保護数の推移</h1>
+<canvas id="top_chart"></canvas>

@@ -1,0 +1,69 @@
+<% breadcrumb :articles %>
+<div class="title">保護された小鳥を検索</div>
+<div class="search_wrapper">
+  <%= form_with scope: :search, url: articles_path, method: :get, local: true do |f| %>
+    <%= f.label :text do %>
+      <span class="label_name">キーワード</span>
+      <%= f.text_field :text,
+      placeholder: '好きな言葉で検索',
+      value: @search_params.present? ? @search_params[:text] : nil
+      %>
+    <% end %>
+
+    <%= f.label :prefecture do %>
+      <span class="label_name"><%= Article.human_attribute_name(:prefecture)%></span>
+      <%= f.select :prefecture,
+      options_for_select(options_for_select_from_enum(Article, :prefecture),
+      selected: @search_params.present? ? @search_params[:prefecrture] : nil )
+      %>
+    <% end %>
+
+    <%= f.label :species do %>
+      <span class="label_name"><%= Article.human_attribute_name(:species)%></span>
+      <%= f.select :species,
+      options_for_select(options_for_select_from_enum(Article, :species),
+      selected: @search_params.present? ? @search_params[:species] : nil)
+      %>
+    <% end %>
+
+    <%= f.label :created_at do %>
+      <span class="label_name"><%= Article.human_attribute_name(:created_at) %></span>
+      <%= f.date_field :posted_date_from, value: @search_params.present? ? @search_params[:posted_date_from] : nil %>
+      ~
+      <%= f.date_field :posted_date_to, value: @search_params.present? ? @search_params[:posted_date_to] : nil %>
+    <% end %>
+    <%= f.label :sort_by_newest do %>
+      <span class="label_name">並び替え</span>
+      <%= f.check_box :sort_by_newest, checked: @is_box_checked %>
+      <span class="newer">新しい順</span><span class="older">古い順</span>
+    <% end %>
+
+    <%= f.submit '検索', class:'search_submit_button'%>
+  <%end%>
+</div>
+
+<div class="page_entries_info">
+  <%= page_entries_info @articles, entry_name: 'item' %>
+</div>
+
+<div class="articles_wrapper">
+  <% @articles.each do |a| %>
+  <div class="item">
+    <%= link_to a.name, article_path(a) %>
+    <% if a.images.attached? %>
+      <%= link_to image_tag(a.images.first.variant(resize_to_limit: [250, 250]), class: 'item_image'),
+       article_path(a) %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png'), class: 'item_image'), article_path(a) %>
+    <% end %>
+    <div class="item_overview">
+      <p><%= a.t_species %> : <%= a.t_prefecture %></p>
+      <p>投稿時間 <%= a.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+      <%= simple_format(h(a.body.slice(0..50) + '...'), {}, sanitize: false, wrapper_tag: 'div')%>
+    </div>
+  </div>
+  <% end %>
+</div>
+<div class="pagination_outside">
+  <%= paginate @articles %>
+</div>

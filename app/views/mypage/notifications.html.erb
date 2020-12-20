@@ -1,0 +1,45 @@
+<% breadcrumb :mypage_notifications %>
+<h1 class="title">通知一覧</h1>
+<div class="page_entries_info">
+  <%= page_entries_info @notifications, entry_name: 'item' %>
+</div>
+<div class="notifications_wrapper">
+  <% if @notifications.present? %>
+    <% @notifications.each do |ntc| %>
+      <div class="notification">
+        <div class="body">
+          <%= link_to ntc.visitor, class:"visitor_avatar" do %>
+          <%= image_tag user_avatar(ntc.visitor)%>
+          <% end %>
+          <p class="description">
+            <% case ntc.action %>
+            <% when 'comment' %>
+            <%= link_to(ntc.visitor.name + 'さん', ntc.visitor)%>
+            が
+            <%= link_to(ntc.visited.name + 'さんの記事', article_path(ntc.article, anchor: "anchor_num_#{ntc.comment.id}"))%>
+            にコメントを送りました。
+            <% when 'message' %>
+            <%= link_to(ntc.visitor.name + 'さん', ntc.visitor)%>
+            があなたに
+            <%= link_to('メッセージ', user_message_path(ntc.visited, ntc.message))%>
+            を送りました。
+            <% when 'favorite' %>
+            <%= link_to(ntc.visitor.name + 'さん', ntc.visitor)%>
+            が
+            <%= link_to('あなたの記事', ntc.article)%>
+            をお気に入りの記事に登録しました。
+            <% end %>
+          </p>
+        </div>
+
+        <p class="created_at">
+          <%= time_ago_in_words(ntc.created_at).upcase%>前
+        </p>
+
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div class="pagination_outside">
+  <%= paginate @notifications %>
+</div>

@@ -1,0 +1,35 @@
+<% breadcrumb :map_articles %>
+
+<div class="title">マップで保護された小鳥を探す</div>
+<div class="selector_wrapper">
+  <%= form_with url: map_articles_path(anchor: 'map_anchor'), method: :get, local: true do |f| %>
+  <span>探す場所:</span>
+  <%= f.select :map_location, options_for_select(options_for_select_from_enum(Article, :prefecture), @selected_prefecture)%>
+  <%= f.submit 'search', id: 'searchButton', hidden: true %>
+  <% end %>
+</div>
+
+<div class="prefecture_buttons_wrapper">
+  <% options_for_select_from_enum(Article, :prefecture)[1..47].each do |prefecture| %>
+    <%= link_to prefecture[0],
+    map_articles_path(anchor: 'map_anchor', map_location: prefecture[1]),
+    class: params[:map_location] == prefecture[1] ? 'prefecture_button selected' : 'prefecture_button'%>
+  <% end %>
+</div>
+<div id="map_anchor">マップのピンをクリックすると詳細が表示されます</div>
+<%= link_to 'load_article', load_detail_articles_path(article_id: 1), method: :post, remote: true, id: 'loadArticle', hidden: true%>
+<% if params[:map_location] %>
+  <div class="center_prefecture_name"><%= I18n.t("enums.article.prefecture.#{params[:map_location]}")%></div>
+<% end %>
+<div id='mapTarget'>
+  探す場所を選択してください
+</div>
+<div id='articleDetails'>
+  <div id="a_id"></div>
+  <div><span id="a_name"></span></div>
+  <img id="a_image" src="" ></img>
+  <div><span id="a_species"></span> : <span id="a_created_at"></span></div>
+  <%= link_to '記事を見にいく', article_path(0), id: 'a_link' %>
+  <div class="a_close">閉じる</div>
+</div>
+<div class="mask"></div>

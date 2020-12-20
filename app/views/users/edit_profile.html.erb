@@ -1,0 +1,37 @@
+<% breadcrumb :edit_profile_user, @user %>
+<h1 class="title">プロフィール編集</h1>
+
+<div class="profiles_wrapper">
+  <div class="avatar">
+    <% if @user.avatar.attached? %>
+      <%= link_to image_tag(current_user.avatar), rails_blob_path(current_user.avatar) %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), asset_url('no_image.png') %>
+    <% end %>
+  </div>
+</div>
+
+<% if flash[:error_msgs].present? %>
+  <% flash[:error_msgs].each do |m| %>
+    <%= m %>
+  <% end %>
+<% end %>
+
+<%= form_with model: @user, local: true do |f| %>
+  <div class="form_item">
+    <%= f.label :name %><%= f.text_field :name %>
+  </div>
+  <div class="form_item">
+    <%= f.label :avatar %><%= f.file_field :avatar %>
+  </div>
+  <%= f.fields_for :secure do |f_s|%>
+    <%= f_s.text_field :target, value: 'profile', hidden: true%>
+  <% end %>
+  <div id="preview_avatar" class="inactive">
+    <p>プレビュー</p>
+  </div>
+  <%# f.label :admin do %>
+    <%# f.check_box :admin, value:false, hidden: true %>
+  <%# end %>
+  <%= f.submit nil %>
+<% end %>

@@ -1,0 +1,85 @@
+
+<% if flash[:error_msgs] %>
+  <div class="error_msgs">
+    <% flash[:error_msgs].each do |em| %>
+      <p><%= em %></p>
+    <% end %>
+  </div>
+<% end %>
+<%= form_with model: article, local: true do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body, placeholder: '捕まえたの状況など...'%>
+  </div>
+  <div>
+    <%= f.label :condition %>
+    <%= f.text_area :condition, placeholder: 'ことりの健康状態など...' %>
+  </div>
+  <div>
+    <%= f.label :species %>
+    <%= f.select :species, options_for_select_from_enum(Article, :species) %>
+    <%# f.select :species, Article.species %>
+  </div>
+  <div>
+    <%= f.label :prefecture %>
+    <label class="map_switch">
+      <input type="checkbox" class="map_switch" <%= 'checked' if @article.map.is_enabled %>>
+      <span class="button"></span>
+    </label>
+
+
+    <div class="google_map_wrapper">
+      <span>マップ移動:</span><%= select_tag :map_location, options_for_select(options_for_select_from_enum(Article, :prefecture)) %>
+      <div id='mapTarget'></div>
+      <div id='substitute_prefecture' >
+        <%= article.t_prefecture || 'マップをクリックして選択してください' %>
+      </div>
+    </div>
+
+    <%= f.select :prefecture, options_for_select_from_enum(Article, :prefecture), selected: article.prefecture %>
+    <%# f.select :prefecture, Article.prefectures, selected: 'Aomori' %>
+  </div>
+  <div>
+    <%= f.label :municipality %>
+    <%= f.text_field :municipality, placeholder: '必須項目ではありません'%>
+  </div>
+  <div>
+    <%= f.label :is_published do %>
+      <%= f.label :is_published %>
+      <%= f.check_box :is_published, checked: @article.is_published %>
+      <span class="button"></span>
+    <% end %>
+  </div>
+  <div>
+    <% f.label :is_resolved do %>
+      <%= f.check_box :is_resolved, checked: false %>
+    <% end %>
+  </div>
+  <div>
+    <%= f.label :images, '画像' %>
+    <%= f.file_field :images, multiple: true %>
+    <div id='dragArea'>
+      送付したい画像を3枚までドラッグ&ドロップ
+      <!-- ここにプレビュー画像を乗っける予定 -->
+      <p id="clearImagesButton">取り消し</p>
+    </div>
+    <% if action_name == 'edit' %>
+    ※画像を更新すると元々の記事画像は消えてしまいます。
+    <% end %>
+  </div>
+  <div class='map_fields'>
+    <%= fields_for article.map do |m| %>
+      <%= m.label :is_enabled %>
+      <%= m.check_box :is_enabled, checked: article.map.is_enabled %>
+      <%= m.label :lat %>
+      <%= m.number_field :lat, value: article.map.lat, step: "0.000001" %>
+      <%= m.label :lng %>
+      <%= m.number_field :lng, value: article.map.lng, step: "0.000001" %>
+    <% end %>
+  </div>
+  <%= f.submit '投稿する' %>
+<% end %>

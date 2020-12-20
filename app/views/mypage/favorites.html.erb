@@ -1,0 +1,28 @@
+<% breadcrumb :mypage_favorites %>
+<h1 class="title">お気に入りの記事</h1>
+<div class="page_entries_info">
+  <%= page_entries_info @favorites, entry_name: 'item' %>
+</div>
+<div class="favorites">
+  <%= 'まだ記事がありません' if @favorites.blank? %>
+  <% @favorites&.each do |fav| %>
+  <div class="article">
+    <% if fav.article.images.attached? %>
+      <%= link_to image_tag(fav.article.images.first), article_path(fav.article), class: 'image' %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), article_path(fav.article), class: 'image' %>
+    <% end %>
+    <div class="overview">
+      <p><%= link_to(fav.article.name.slice(0..25) + '...', article_path(fav.article)) %></p>
+      <p><%= fav.article.t_prefecture %> : <%= fav.article.t_species %></p>
+      <p><%= fav.article.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+    </div>
+    <div class="buttons">
+      <%= link_to "#{fav.article.user.name}さん", fav.article.user, class: 'button' %>
+    </div>
+  </div>
+  <% end %>
+</div>
+<div class="pagination_outside">
+  <%= paginate @favorites %>
+</div>

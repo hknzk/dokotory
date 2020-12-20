@@ -1,0 +1,52 @@
+<% breadcrumb :visitor_article %>
+<h1 class="title"><%= @article.name %></h1>
+<div class="article_detail_head">
+  投稿者 : <%= link_to @contributor.name + 'さん', user_path(@contributor) %>
+   - <%= @article.created_at.strftime('%Y-%m-%m %H:%M') %>
+</div>
+<div class="tabs"><span class="image_tab selected">写真</span><span class="map_tab">地図</span></div>
+<div class="map_info_wrapper">
+  <div hidden>
+    <%= Map.human_attribute_name :lat  %>
+    <%= Map.human_attribute_name :lng  %>
+    <input type="number" id="map_lat" step="0.000001" value=<%= @map.lat %>></input>
+    <input type="number" id="map_lng" step="0.000001" value=<%= @map.lng %>></input>
+  </div>
+  <% unless @article.map.is_enabled %>
+    <p>この記事のマップ機能はOFFになっています</p>
+  <% end %>
+  <div id='mapTarget' ></div>
+</div>
+<div class="frames_wrapper">
+  <% if @article.images.attached? %>
+    <div class="main_frame">
+      <%= link_to(
+        image_tag(@article.images.first.variant(resize_to_limit: [400, 400])),
+        rails_blob_path(@article.images.first),
+        class: 'main_img'
+        )%>
+    </div>
+    <div class="img_menu">
+    <% @article.images.each do |image| %>
+        <%= image_tag(image.variant(resize_to_limit: [120, 120]),
+        data: {image_path: rails_blob_path(image)},
+        class: 'sub_img'
+        ) %>
+    <% end %>
+    </div>
+  <%else%>
+    <%= link_to(image_tag(asset_url('no_image.png')), asset_url('no_image.png'), class: 'main_img')%>
+  <% end %>
+</div>
+
+<div class="article_detail_foot">
+  <div class="upper">
+    <div><span class="item">なかま</span><span class="detail"><%= @article.t_species %></span> </div>
+    <div><span class="item">都道府県</span><span class="detail"><%= @article.t_prefecture %></span></div>
+  </div>
+  <div class="lower">
+    <div><span class="item">市町村</span><span class="detail"><%= @article.municipality %></span></div>
+    <div><span class="item">保護の状況</span><span class="detail"><%= simple_format(h(@article.body), {}, sanitize: false) %></span></div>
+    <div><span class="item">ことりの状態</span><span class="detail"><%= simple_format(h(@article.condition), {}, sanitize: false) %></span></div>
+  </div>
+</div>

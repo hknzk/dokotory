@@ -1,0 +1,22 @@
+<% breadcrumb :user_message, @message %>
+<h1 class="title"><%= @sender.name %>さんからのメッセージ</h1>
+
+<h2><%= @message.name%></h2>
+
+<div class="sender_outside">
+  <div class="sender_inside">
+    <span class="from">From</span>
+    <% if @sender.avatar.attached? %>
+      <%= link_to image_tag(@message.sender.avatar), @sender %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), @sender %>
+    <% end %>
+    <span class="name"><%=link_to(@sender.name + 'さん', @sender)%></span>
+  </div>
+</div>
+
+<div class="message_body">
+  <%= simple_format(h(@message.body),{}, sanitize: false)%>
+</div>
+
+<%= link_to '返信する', new_user_message_path(@sender), class: 'reply_button' %>

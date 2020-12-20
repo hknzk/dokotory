@@ -1,0 +1,364 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.users_new {
+  .error_msgs {
+    color: rgb(241, 88, 88);
+    margin-top: 10px;
+  }
+
+  form {
+    margin: 0 15px;
+    padding: 10px 15px;
+    width: 80%;
+    border-radius: 15px;
+    .form_item {
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      label {
+        color: white;
+        flex-grow: 1;
+        text-align: center;
+        display: inline-block;
+        border-radius: 10px 0 0 10px;
+        background: rgb(236, 154, 57);
+        font-size: 16px;
+        padding: 2px 5px;
+        height: 32px;
+        line-height: 32px;
+      }
+      input {
+        flex-grow: 2;
+        display: block;
+        padding: 0 10px;
+        font-size: 16px;
+        border: 2px solid rgb(236, 154, 57);
+        border-radius: 0 10px 10px 0;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+      }
+    }
+
+    input[type="submit"] {
+      display: block;
+      margin: 20px auto;
+      cursor: pointer;
+      background: white;
+      padding: 10px;
+      color: rgb(102, 204, 55);
+      border: 2px solid rgb(102, 204, 55);
+      border-radius: 5px;
+      transition:  0.3s;
+      font-size: 18px;
+      &:hover {
+        background: rgb(192, 252, 164);
+      }
+    }
+  }
+}
+
+.users_show {
+
+  a {
+    text-decoration: none;
+    color: rgb(62, 62, 62);
+    &:hover {
+      text-decoration: underline;;
+    }
+  }
+
+  h2 {
+    color: rgb(102, 204, 55);
+    border-bottom: 1px solid rgb(102, 204, 55);
+    a {
+      display: inline-block;
+      padding: 2px 4px;
+      background: rgb(236, 154, 57);
+      border-radius: 5px;
+      font-size: 13px;
+      // margin-bottom: 4px;
+      vertical-align: middle;
+      color: white;
+      &:hover {
+        filter: brightness(110%);
+        text-decoration: none;
+      }
+    }
+  }
+
+  .profiles_wrapper {
+    width: 550px;
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+    padding: 15px;
+    background-image:
+    repeating-linear-gradient(45deg,#fff, rgb(255, 208, 153) 3px,transparent 0, transparent 6px);
+    border-radius: 10px;
+    .avatar {
+      img {
+        border-radius: 10px;
+        max-width: 200px;
+        border: 2px solid rgb(136, 136, 136);
+        background-color: white;
+      }
+    }
+
+
+    .user_info {
+      // height: 240px;
+      // margin-left: 60px;
+      display:flex;
+      justify-content: space-around;
+      flex-direction: column;
+      align-items: center;
+      color: rgb(136, 136, 136);
+      .name {
+        span {
+          background: white;
+          padding: 10px;
+          border: 2px solid rgb(136, 136, 136);
+          border-radius: 0 10px 10px 0;
+          &:first-of-type {
+            color: white;
+            background:rgb(136, 136, 136);
+            border-radius: 10px 0 0 10px;
+          }
+        }
+      }
+
+      .message_button {
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px;
+        border-radius: 15px;
+        background: rgb(236, 154, 57);
+        font-size: 20px;
+        text-decoration: none;
+        color: white;
+        &:hover {
+          filter: brightness(110%);
+        }
+      }
+    }
+  }
+
+  .posted_articles_wrapper {
+    .articles {
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      .article {
+        border-radius: 10px;
+        margin: 4px;
+        padding: 5px;
+        background-color: rgb(224, 224, 224);
+        flex-basis: 95%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        display: flex;
+        .image {
+          width: 100px;
+          img {
+            margin-top: 5px;
+            max-width: 100px;
+            height: 80px;
+            border-radius: 10px;
+          }
+        }
+        .overview {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-direction: column;
+          width: 260px;
+        }
+      }
+    }
+  }
+}
+
+.users_edit {
+  h2 {
+    color: rgb(102, 204, 55);
+    border-bottom: 1px solid rgb(102, 204, 55);
+  }
+  .profiles_wrapper {
+    width: 550px;
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+    padding: 15px;
+    background-image:
+    repeating-linear-gradient(45deg,#fff, rgb(255, 208, 153) 3px,transparent 0, transparent 6px);
+    border-radius: 10px;
+    .avatar {
+      img {
+        border-radius: 10px;
+        max-width: 200px;
+        border: 2px solid rgb(136, 136, 136);
+        background-color: white;
+      }
+    }
+  }
+
+  form {
+    .form_item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 10px;
+      label {
+        padding: 10px;
+        border: 2px solid rgb(136, 136, 136);
+        color: white;
+        background:rgb(136, 136, 136);
+        border-radius: 10px 0 0 10px;
+      }
+      input {
+        height: 24px;
+        background: white;
+        padding: 10px;
+        border: 2px solid rgb(136, 136, 136);
+        border-radius: 0 10px 10px 0;
+      }
+    }
+    input[type="submit"] {
+      display: block;
+      margin: 0px auto;
+      cursor: pointer;
+      background: white;
+      padding: 10px;
+      color: rgb(102, 204, 55);
+      border: 2px solid rgb(102, 204, 55);
+      border-radius: 5px;
+      transition:  0.3s;
+      font-size: 18px;
+      &:hover {
+        background: rgb(192, 252, 164);
+      }
+    }
+  }
+}
+
+.users_edit_profile {
+  .profiles_wrapper {
+    width: 550px;
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+    padding: 15px;
+    background-image:
+    repeating-linear-gradient(45deg,#fff, rgb(255, 208, 153) 3px,transparent 0, transparent 6px);
+    border-radius: 10px;
+    .avatar {
+      img {
+        border-radius: 10px;
+        max-width: 200px;
+        border: 2px solid rgb(136, 136, 136);
+        background-color: white;
+      }
+    }
+  }
+
+  form {
+    .form_item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 10px;
+      label {
+        padding: 10px;
+        border: 2px solid rgb(136, 136, 136);
+        color: white;
+        background:rgb(136, 136, 136);
+        border-radius: 10px 0 0 10px;
+      }
+      input {
+        height: 24px;
+        background: white;
+        padding: 10px;
+        border: 2px solid rgb(136, 136, 136);
+        border-radius: 0 10px 10px 0;
+      }
+    }
+    input[type="submit"] {
+      display: block;
+      margin: 0px auto;
+      cursor: pointer;
+      background: white;
+      padding: 10px;
+      color: rgb(102, 204, 55);
+      border: 2px solid rgb(102, 204, 55);
+      border-radius: 5px;
+      transition:  0.3s;
+      font-size: 18px;
+      &:hover {
+        background: rgb(192, 252, 164);
+      }
+    }
+  }
+
+  #preview_avatar {
+    display: block;
+    padding: 20px;
+    border-radius: 15px;
+    transition: 0.5s;
+    margin: 10px auto;
+    width: 60%;
+    background: rgb(212, 211, 211);
+    color: rgb(136, 136, 136);
+    text-align: center;
+    &.inactive {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
+    }
+    img {
+      width: 200px;
+      border-radius: 15px;
+    }
+  }
+}
+
+.users_posted_articles {
+  .posted_articles_wrapper {
+    .articles {
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      .article {
+        border-radius: 10px;
+        margin: 4px;
+        padding: 5px;
+        background-color: rgb(224, 224, 224);
+        flex-basis: 95%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        display: flex;
+        .image {
+          width: 100px;
+          img {
+            margin-top: 5px;
+            max-width: 100px;
+            height: 80px;
+            border-radius: 10px;
+          }
+        }
+        .overview {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-direction: column;
+          width: 260px;
+        }
+      }
+    }
+  }
+}

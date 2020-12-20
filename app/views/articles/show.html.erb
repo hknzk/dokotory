@@ -1,0 +1,115 @@
+<% breadcrumb :article, @article %>
+<h1 class="title"><%= @article.name %></h1>
+<div class="article_detail_head">
+  投稿者 : <%= link_to @contributor.name + 'さん', user_path(@contributor) %>
+   - <%= @article.created_at.strftime('%Y-%m-%m %H:%M') %>
+  <% if @article.user_id == current_user.id %>
+    <%= link_to '編集', edit_article_path(@article), class: 'button'%>
+    <%= link_to '削除', @article, method: :delete, data: {confirm: '削除しますか？'}, class: 'button' %>
+  <% end %>
+  <div class="favorite_button_wrapper">
+    <%= render partial: 'favorite', locals: {art: @article, fav: @favorite} %>
+  </div>
+</div>
+<div class="tabs"><span class="image_tab selected">写真</span><span class="map_tab">地図</span></div>
+<div class="map_info_wrapper">
+  <div hidden>
+    <%= Map.human_attribute_name :lat  %>
+    <%= Map.human_attribute_name :lng  %>
+    <input type="number" id="map_lat" step="0.000001" value=<%= @map.lat %>></input>
+    <input type="number" id="map_lng" step="0.000001" value=<%= @map.lng %>></input>
+  </div>
+  <% unless @article.map.is_enabled %>
+    <p>この記事のマップ機能はOFFになっています</p>
+  <% end %>
+  <div id='mapTarget' ></div>
+</div>
+<div class="frames_wrapper">
+  <% if @article.images.attached? %>
+    <div class="main_frame">
+      <%= link_to(
+        image_tag(@article.images.first.variant(resize_to_limit: [400, 400])),
+        rails_blob_path(@article.images.first),
+        class: 'main_img'
+        )%>
+    </div>
+    <div class="img_menu">
+    <% @article.images.each do |image| %>
+        <%= image_tag(image.variant(resize_to_limit: [120, 120]),
+        data: {image_path: rails_blob_path(image)},
+        class: 'sub_img'
+        ) %>
+    <% end %>
+    </div>
+  <%else%>
+    <%= link_to(image_tag(asset_url('no_image.png')), asset_url('no_image.png'), class: 'main_img')%>
+  <% end %>
+</div>
+
+<div class="article_detail_foot">
+  <div class="upper">
+    <div><span class="item">なかま</span><span class="detail"><%= @article.t_species %></span> </div>
+    <div><span class="item">都道府県</span><span class="detail"><%= @article.t_prefecture %></span></div>
+  </div>
+  <div class="lower">
+    <div><span class="item">市町村</span><span class="detail"><%= @article.municipality %></span></div>
+    <div><span class="item">保護の状況</span><span class="detail"><%= simple_format(h(@article.body), {}, sanitize: false) %></span></div>
+    <div><span class="item">ことりの状態</span><span class="detail"><%= simple_format(h(@article.condition), {}, sanitize: false) %></span></div>
+  </div>
+</div>
+
+<h2 class="comment_lead">コメント</h2>
+
+<div class='comments_wrapper'>
+  <% if @comments.length > 0 %>
+    <% @comments.each do |c| %>
+      <span id="anchor_num_<%= c.id %>"></span>
+      <div class="comment <%= c.user_id == current_user.id ? 'own' : ''%>">
+        <div class="image">
+          <% if c.image.attached?%>
+          <%= link_to image_tag(c.image.variant(resize_to_limit: [200, 300])), rails_blob_path(c.image) %>
+          <!-- <span class="arrow"></span> -->
+          <% end %>
+        </div>
+        <div class="body_outside">
+          <div class="body_inside">
+            <%= c.body %>
+          </div>
+          <div class="other_info">
+            <%= link_to "#{c.user.name}さん", user_path(c.user) %>
+            <%= c.created_at.strftime('%Y-%m-%d %H:%M') %>
+            <% if current_user.id == c.user_id %>
+            <%= link_to '削除', article_comment_path(@article, c), method: :delete, data: {confirm: '削除しますよろしいですか？'} %>
+            <% end %>
+          </div>
+          <!-- <div class="delete_link">
+          </div> -->
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="comments_not_found">
+      まだコメントが投稿されていません
+    </div>
+  <% end %>
+</div>
+
+<div class="comment_form_wrapper" id="anchor_failure">
+  <h2>コメントの新規投稿</h2>
+  <% if flash[:error_msgs].present? %>
+  <div class="comment_error">
+    <% flash[:error_msgs]&.each do |m| %>
+    <p><%= m %></p>
+    <% end %>
+  </div>
+  <% end %>
+  <%= form_with model: [@article, @new_comment], local: true do |f| %>
+  <%= f.text_area :body, placeholder: 'コメントは一般公開されます、他の人が読んでも困らない内容にしましょう' %>
+  <div id="dragArea" >
+    <p>画像ファイルを1枚までドラッグ&ドロップできます</p>
+    <p id="clearCommentImagesButton">取り消し</p>
+  </div>
+  <%= f.file_field :image %>
+  <%= f.submit nil%>
+  <% end %>
+</div>

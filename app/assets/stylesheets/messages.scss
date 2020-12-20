@@ -1,0 +1,118 @@
+// Place all the styles related to the DirectMessages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.messages_new {
+  .error_msg {
+    color: rgb(250, 84, 84);
+  }
+
+  form {
+    padding: 15px;
+    label {
+      display: block;
+      font-size: 20px;
+      color: rgb(110, 110, 110);
+    }
+
+    input[type="text"] {
+      display: block;
+      margin: 10px auto;
+      width: 90%;
+      padding: 5px;
+    }
+
+    textarea {
+      display: block;
+      margin: 10px auto 20px;
+      width: 90%;
+      height: 200px;
+      padding: 5px;
+    }
+
+    input[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      padding: 10px;
+      background: rgb(236, 154, 57);
+      color: white;
+      border-radius: 10px;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+      &:hover {
+        filter: brightness(110%);
+      }
+    }
+  }
+}
+
+.messages_show {
+  h2 {
+    width: 95%;
+    margin: 5px;
+    font-size: 18px;
+    color: rgb(102, 204, 55);
+    border-bottom: 1px solid rgb(102, 204, 55);
+  }
+
+  .sender_outside {
+    .sender_inside {
+      text-align: right;
+      color: rgb(110, 110, 110);
+      a {
+        vertical-align: middle;
+        color: rgb(110, 110, 110);
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+        img {
+          border-radius: 30%;
+          width: 50px;
+          height: 50px;
+          vertical-align: middle;
+        }
+      }
+      .from {
+        vertical-align: middle;
+        margin: 0 20px;
+      }
+
+      .name {
+        vertical-align: middle;
+        margin: 0 20px;
+      }
+    }
+  }
+
+  .message_body {
+
+    width: 90%;
+    min-height: 50px;
+    margin: 5px 5px;
+    border: 2px solid rgb(154, 154, 154);
+    color: rgb(110, 110, 110);
+    padding: 10px;
+    border-radius: 5px;
+    p {
+
+    }
+  }
+
+  .reply_button {
+    display: block;
+    margin: 15px auto;
+    width: 80px;
+    text-align: center;
+    background: rgb(236, 154, 57);
+    text-decoration: none;
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+    border-radius: 10px;
+    &:hover {
+      filter: brightness(110%);
+    }
+  }
+}

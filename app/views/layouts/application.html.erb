@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html theme='default'>
+  <head>
+    <title>Dokotory</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= include_gon(watch: true) %>
+    <%= javascript_pack_tag 'google_map', defer: true%>
+    <script src="https://maps.googleapis.com/maps/api/js?language=ja&amp;region=JP&amp;key=AIzaSyBxCfKusvSbabI6uAOX34ngwINOR7DfZFI&amp;callback=initMap&amp;libraries=places&amp;v=weekly" defer></script>
+    <%= javascript_pack_tag 'article', defer: true%>
+    <%= javascript_pack_tag 'user', defer: true%>
+    <%= javascript_pack_tag 'home_mypage', defer: true%>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body data-controller="<%= controller_name %>" data-action="<%= action_name%>">
+    <div class="header">
+      <div class="header_inner">
+        <h1 class="header_lead">日本全国、マップで探せる迷インコのためのSNS</h1>
+        <div class="header_belt">
+          <%= link_to 'ドコトリー', root_path, class: "header_logo" %>
+          <div class="header_buttons">
+            <% if current_user.present? %>
+              <%= link_to mypage_notifications_path, class: 'notification_button' do %>
+                <span class="material-icons">notifications</span>
+                <% if unchecked_notifications.any? %>
+                  <span class="dot"></span>
+                <% end %>
+              <% end %>
+              <div class="login_button"><%= current_user.name %>さん</div>
+              <%= link_to 'ログアウト', logout_path, method: :delete, data: {confirm: 'ログアウトしますか'},class: 'signup_button'%>
+            <% else %>
+              <%= link_to 'ログイン', login_path, class: 'login_button' %>
+              <%= link_to '新規登録', new_user_path, class: 'signup_button' %>
+            <% end %>
+          </div>
+        </div>
+        <div class="header_nav">
+          <%= link_to 'トップ', root_path, class: controller_name + action_name == 'hometop' ? 'selected' : nil %>
+          <%= link_to '小鳥を探す', articles_path, class: controller_name + action_name == 'articlesindex' ? 'selected' : nil %>
+          <%= link_to 'マップで探す', map_articles_path, class: controller_name + action_name == 'articlesmap' ? 'selected' : nil %>
+          <%= link_to 'お気に入り記事', mypage_favorites_path, class: controller_name + action_name == 'mypagefavorites' ? 'selected' : nil %>
+          <%= link_to 'マイページ', mypage_path, class: controller_name + action_name == 'mypagetop' ? 'selected' : nil %>
+        </div>
+      </div>
+    </div>
+    <div class="flash_wrapper">
+      <% if flash[:notice].present? %>
+      <div class="flash <%='warning' if flash[:notice] =~ /^【！】.*/%>">
+        <div class="flash_inner">
+          <%= flash[:notice] %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <% if controller_name + action_name == 'hometop' %>
+    <div class="breadcrumbs">
+      <span></span>
+    </div>
+    <% else %>
+      <%= breadcrumbs separator: " &rsaquo; " %>
+    <% end %>
+    <div class="contents">
+      <div class="main">
+        <div class="<%= controller_name + '_' + action_name%>">
+          <%= yield %>
+        </div>
+      </div>
+      <% if controller_name != 'admin' %>
+        <div class="sidebar">
+          <div class="side_menu">
+            <h2>メニュー</h2>
+            <%= link_to '投稿する', new_article_path, class: "button post_page"%>
+            <%= link_to 'メッセージBOX', mypage_received_messages_path, class: "button post_page"%>
+            <!-- <div class="button post_page">投稿する</div>
+              <div class="button message_page">マイメッセージ</div> -->
+          </div>
+          <div class="side_links">
+            <h2>関連リンク</h2>
+            <a href="https://www.npa.go.jp/bureau/soumu/ishitsubutsu/ishitsubutsulink.html">警察庁の都道府県別遺失物検索ページ</a>
+            <a href="http://kotori99.org/">NPO法人 小鳥レスキュー会</a>
+            <a href="https://www.tsubasa.ne.jp/">認定NPO法人TSUBASA</a>
+          </div>
+          <div class="side_ad">
+            ad
+          </div>
+          <% if controller_name + action_name == 'articlesindex'%>
+            <div class="side_new_comments">
+              <h2>新着コメント</h2>
+              <% @new_comments.each do |c| %>
+                <div class="comment_item">
+                  <%= link_to(simple_format(h(c.body.slice(0..20) + '...')), article_path(c.article_id))%>
+                  <p><%= c.article.name%> - <%= c.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+                </div>
+              <% end %>
+            </div>
+            <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class="footer">
+      <div class="footer_nav">
+        <ul>
+          <li><span class="material-icons">keyboard_arrow_right</span><%= link_to 'トップ', root_path %></li>
+          <li><span class="material-icons">keyboard_arrow_right</span><%= link_to '小鳥を探す', root_path %></li>
+          <li><span class="material-icons">keyboard_arrow_right</span><%= link_to 'マップで探す', root_path %></li>
+          <li><span class="material-icons">keyboard_arrow_right</span><%= link_to 'おしらせ', root_path %></li>
+          <li><span class="material-icons">keyboard_arrow_right</span><%= link_to 'マイページ', root_path %></li>
+        </ul>
+      </div>
+      <div class="footer_copy">
+        <%= link_to 'ドコトリー', root_path, class: "header_logo" %>
+        <p>Copyright © ~~~~~~~~~~ All rights reserved.</p>
+        <%= embedded_svg('raven.svg', class:'footer_raven') %>
+      </div>
+    </div>
+  </body>
+</html>

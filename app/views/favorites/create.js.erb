@@ -1,0 +1,8 @@
+console.log('create');
+fav = document.querySelector('.favorite_button');
+favWrapper = document.querySelector('.favorite_button_wrapper');
+flashWrapper = document.querySelector('.flash_wrapper');
+
+favWrapper.innerHTML = "<%= j(render partial: 'articles/favorite', locals: {art: @article, fav: @favorite}) %>";
+flashWrapper.innerHTML =
+  "<div class='flash'><div class='flash_inner'>記事をお気に入りに登録しました</div></div>";

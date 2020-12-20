@@ -1,0 +1,25 @@
+<% breadcrumb :edit_article, @article %>
+
+<h1 class="title">記事の編集</h1>
+<div class="frames_wrapper">
+  <% if @article.images.attached? %>
+    <div class="main_frame">
+      <%= link_to(
+        image_tag(@article.images.first.variant(resize_to_limit: [400, 400])),
+        rails_blob_path(@article.images.first),
+        class: 'main_img'
+        )%>
+    </div>
+    <div class="img_menu">
+    <% @article.images.each do |image| %>
+        <%= image_tag(image.variant(resize_to_limit: [120, 120]),
+        data: {image_path: rails_blob_path(image)},
+        class: 'sub_img'
+        ) %>
+    <% end %>
+    </div>
+  <%else%>
+    <%= link_to(image_tag(asset_url('no_image.png')), asset_url('no_image.png'), class: 'main_img')%>
+  <% end %>
+</div>
+<%= render partial: 'form', locals: {article: @article} %>

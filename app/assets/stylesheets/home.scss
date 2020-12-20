@@ -1,0 +1,82 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+@font-face {
+  font-family: "gonta";
+  src: asset-url('/fonts/gonta.otf') format('opentype');
+  // src: asset-url('fonts/gonta.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+//
+// .logo {
+//  font-family: 'Noto Serif SC', serif;
+//  color: red;
+// }
+
+.logo {
+ font-family: 'gonta';
+ font-size: 30px;
+ color: limegreen;
+}
+
+.home_top {
+  .page_intro {
+    color: rgb(136, 136, 136);
+    padding: 14px;
+  }
+
+  .articles {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    .article {
+      border-radius: 10px;
+      margin: 4px;
+      padding: 5px;
+      background-color: rgb(224, 224, 224);
+      width: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      .image {
+        width: 100px;
+        img {
+          margin-top: 5px;
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+      }
+      .overview {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        width: 260px;
+      }
+      .buttons {
+        .button {
+          padding: 10px;
+          background: rgb(236, 154, 57);
+          border-radius: 10px;
+          color: white;
+          &:last-of-type {
+            background: rgb(250, 84, 84);
+          }
+          &:hover {
+            filter: brightness(110%);
+          }
+        }
+      }
+    }
+  }
+}
+
+#top_chart {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,9 @@
+var loadedArticle = {
+  id:'<%= @article.id %>',
+  imgae_url: '<%= rails_blob_path(@article.images.first) %>',
+  name:'<%= @article.name %>',
+  species:'<%= @article.species %>',
+  created_at:'<%= @article.created_at %>',
+}
+
+console.log(loadedArticle);

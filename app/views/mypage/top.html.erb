@@ -1,0 +1,138 @@
+<% breadcrumb :mypage%>
+
+<h1 class="title"><%= current_user.name %>さんのマイページ</h1>
+<div class="profiles_wrapper">
+  <div class="avatar">
+    <% if current_user.avatar.attached? %>
+      <%= link_to image_tag(current_user.avatar), rails_blob_path(current_user.avatar) %>
+    <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), asset_url('no_image.png') %>
+    <% end %>
+  </div>
+  <div class="user_info">
+    <div class="edit_button">
+      <%= link_to 'ログイン設定', edit_user_path(current_user) %>
+    </div>
+    <div class="edit_button">
+      <%= link_to 'プロフィール編集', edit_profile_user_path(current_user) %>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="direct_messages_wrapper">
+  <h2>ダイレクトメッセージ一覧</h2>
+</div> -->
+
+<div class="posted_articles_wrapper">
+  <h2>
+    投稿した記事一覧
+    <%= link_to 'すべて見る', mypage_posted_articles_path %>
+  </h2>
+  <div class="articles">
+    <%= 'まだ記事がありません' if @posted_articles.blank? %>
+    <% @posted_articles.each do |a| %>
+    <div class="article">
+      <% if a.images.attached? %>
+      <%= link_to image_tag(a.images.first), article_path(a), class: 'image' %>
+      <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), article_path(a), class: 'image' %>
+      <% end %>
+      <div class="overview">
+        <p><%= link_to(a.name.slice(0..15) + '...', article_path(a)) %></p>
+        <p><%= a.t_prefecture %> : <%= a.t_species %></p>
+        <p><%= a.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+      </div>
+      <div class="buttons">
+        <%= link_to '編集', edit_article_path(a), class: 'button'%>
+        <%= link_to '削除', a, method: :delete, data: {confirm: '削除しますか？'}, class: 'button' %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="draft_articles_wrapper">
+  <h2>
+    下書きの記事一覧
+    <%= link_to 'すべて見る', mypage_draft_articles_path %>
+  </h2>
+  <div class="articles">
+    <%= 'まだ記事がありません' if @draft_articles.blank? %>
+    <% @draft_articles.each do |a| %>
+    <div class="article">
+      <% if a.images.attached? %>
+      <%= link_to image_tag(a.images.first), edit_article_path(a), class: 'image' %>
+      <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), edit_article_path(a), class: 'image' %>
+      <% end %>
+      <div class="overview">
+        <p><%= link_to(a.name.slice(0..15) + '...', edit_article_path(a)) %></p>
+        <p><%= a.t_prefecture %> : <%= a.t_species %></p>
+        <p><%= a.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+      </div>
+      <div class="buttons">
+        <%= link_to '編集', edit_article_path(a), class: 'button'%>
+        <%= link_to '削除', a, method: :delete, data: {confirm: '削除しますか？'}, class: 'button' %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="favorites_wrapper">
+  <h2>
+    お気に入りの記事一覧
+    <%= link_to 'すべて見る', mypage_favorites_path %>
+  </h2>
+  <%= 'まだ記事がありません' if @favorites.blank? %>
+  <div class="articles">
+    <% @favorites&.each do |fav| %>
+    <div class="article">
+      <% if fav.article.images.attached? %>
+      <%= link_to image_tag(fav.article.images.first), article_path(fav.article), class: 'image' %>
+      <% else %>
+      <%= link_to image_tag(asset_url('no_image.png')), article_path(fav.article), class: 'image' %>
+      <% end %>
+      <div class="overview">
+        <p><%= link_to(fav.article.name.slice(0..25) + '...', article_path(fav.article)) %></p>
+        <p><%= fav.article.t_prefecture %> : <%= fav.article.t_species %></p>
+        <p><%= fav.article.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+      </div>
+      <div class="buttons">
+        <%= link_to "#{fav.article.user.name}さん", fav.article.user, class: 'button' %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="articles_in_progress_wrapper">
+  <h2>
+    やりとり中の記事
+    <%= link_to 'すべて見る', mypage_articles_in_progress_path %>
+  </h2>
+  <div class="articles">
+    <% if @articles_in_progress.present? %>
+      <% @articles_in_progress.each do |a| %>
+      <div class="article">
+        <% if a.images.attached? %>
+        <%= link_to image_tag(a.images.first), article_path(a), class: 'image' %>
+        <% else %>
+        <%= link_to image_tag(asset_url('no_image.png')), article_path(a), class: 'image' %>
+        <% end %>
+        <div class="overview">
+          <p><%= link_to(a.name.slice(0..15) + '...', article_path(a)) %></p>
+          <p><%= a.t_prefecture %> : <%= a.t_species %></p>
+          <p><%= a.created_at.strftime('%Y-%m-%d %M:%H') %></p>
+        </div>
+        <div class="contributor">
+          <%= link_to(a.user.name + 'さん', user_path(a.user), class: 'button')%>
+        </div>
+      </div>
+      <% end %>
+      <% else %>
+      まだ記事がありません
+    <% end %>
+  </div>
+</div>

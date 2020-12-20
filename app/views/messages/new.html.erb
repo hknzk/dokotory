@@ -1,0 +1,16 @@
+<% breadcrumb :new_user_message, @user %>
+<h1 class="title"><%= @user.name %>さんにメッセージを送る</h1>
+<% if flash[:error_msgs].present? %>
+  <% flash[:error_msgs].each do |em| %>
+    <p class="error_msg"><%= em %></p>
+  <% end %>
+<% end %>
+<%= form_with model: [@user, @message], local: true do |f|%>
+  <div>
+    <%= f.label :name %><%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :body %><%= f.text_area :body %>
+  </div>
+  <%= f.submit '送信する'%>
+<% end %>

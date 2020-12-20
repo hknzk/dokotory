@@ -1,0 +1,42 @@
+<% breadcrumb :edit_user, @user %>
+
+<h1 class="title">ログイン設定</h1>
+
+<h2>メールアドレスの変更</h2>
+
+<% if flash[:error_msgs].present? %>
+  <% flash[:error_msgs].each do |m| %>
+    <%= m %>
+  <% end %>
+<% end %>
+
+<%= form_with model: @user, local: true, target: :email do |f| %>
+  <div class="form_item">
+    <%= f.label :email %><%= f.text_field :email %>
+  </div>
+  <%= f.fields_for :secure do |f_s|%>
+    <%= f_s.text_field :target, value: 'email', hidden: true %>
+    <div class="form_item">
+      <%= f_s.label :current_password, '今のパスワード' %><%= f_s.password_field :current_password %>
+    </div>
+  <% end %>
+  <%= f.submit nil %>
+<% end %>
+
+<h2>パスワードの変更</h2>
+
+<%= form_with model: @user, local: true, target: :password do |f| %>
+  <div class="form_item">
+    <%= f.label :password,'新しいパスワード' %><%= f.password_field :password %>
+  </div>
+  <div class="form_item">
+    <%= f.label :password_confirmation, '新しいパスワード(確認用)' %><%= f.password_field :password_confirmation %>
+  </div>
+  <%= f.fields_for :secure do |f_s|%>
+    <%= f_s.text_field :target, value: 'password', hidden: true %>
+    <div class="form_item">
+      <%= f_s.label :current_password, '今のパスワード' %><%= f_s.password_field :current_password %>
+    </div>
+  <% end %>
+  <%= f.submit nil %>
+<% end %>

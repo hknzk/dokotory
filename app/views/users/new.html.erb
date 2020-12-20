@@ -1,0 +1,35 @@
+<% breadcrumb :new_user %>
+
+<h1 class="title">新規登録</h1>
+
+<% if flash[:error_msgs].present? %>
+  <div class="error_msgs">
+    <% flash[:error_msgs].each do |em| %>
+      <p><%= em %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_with model: @user, local: true do |f| %>
+  <div class="form_item name">
+    <%= f.label :name %><%= f.text_field :name %>
+  </div>
+
+  <div class="form_item email">
+    <%= f.label :email %><%= f.text_field :email %>
+  </div>
+
+  <div class="form_item password">
+    <%= f.label :password %><%= f.password_field :password %>
+  </div>
+
+  <div class="form_item password_confirmation">
+    <%= f.label :password_confirmation %><%= f.password_field :password_confirmation %>
+  </div>
+
+  <%# f.label :admin do %>
+    <%# f.check_box :admin, value:false, hidden: true %>
+  <%# end %>
+
+  <%= f.submit nil %>
+<% end %>
