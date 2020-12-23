@@ -6,24 +6,18 @@ class ApplicationController < ActionController::Base
 
   before_action :login_required
 
+
   private
+  
+  def authenticate_admin_user!
+    redirect_to root_path, notice: '【！】不正なアクセスです' unless current_user.admin
+  end
 
   def current_user
     if session[:user_id]
       @current_user ||= User.find_by(id: session[:user_id])
     end
   end
-
-  # def set_or_create_current_user_board(article_id)
-  #   @board = current_user.boards.find_by(article_id: article_id)
-  #   if @board.blank?
-  #     @board = current_user.boards.new(article_id: article_id)
-  #     unless @board.save
-  #       flash[:notice] = "ボード生成失敗"
-  #       redirect_to root_path
-  #     end
-  #   end
-  # end
 
   def login_required
     redirect_to login_path, notice: '【！】ログインしてください' unless current_user

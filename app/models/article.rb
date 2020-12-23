@@ -36,7 +36,7 @@ class Article < ApplicationRecord
     oita:'oita',miyazaki:'miyazaki',kagoshima:'kagoshima',okinawa:'okinawa'
   }
 
-  scope :search, -> (search_params) do
+  scope :search_article, -> (search_params) do
     if search_params.blank?
       order(created_at: :asc)
     elsif search_params.except(:sort_by_newest).blank?

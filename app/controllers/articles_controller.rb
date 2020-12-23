@@ -27,7 +27,7 @@ class ArticlesController < ApplicationController
 
     @new_comments = Comment.all.order(created_at: :desc).limit(10).includes(:article)
     @search_params = search_params
-    @articles = search_params.present? ? Article.published.search(@search_params) : Article.published.order(created_at: :desc)
+    @articles = search_params.present? ? Article.published.search_article(@search_params) : Article.published.order(created_at: :desc)
     @articles = @articles.page(params[:page]).per(10)
   end
 

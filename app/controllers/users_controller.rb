@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     #admin
     @users = User.all
   end
-  
+
   def show
     @articles = @user.articles.where(is_published: true).order(created_at: :desc).limit(3)
   end
@@ -38,52 +38,100 @@ class UsersController < ApplicationController
 
   def update
 
-    boolean = nil
-    case secure_params[:target]
-      when 'email'
-        if @user.authenticate(secure_params[:current_password])
-          boolean = @user.update(
-             email: user_params[:email]
-           )
-          flash[:notice] = 'ログイン設定を更新しました'
-        else
-          boolean = false
-          flash[:notice] = '【！】パスワードが間違っています'
-        end
-      when 'password'
-        if @user.authenticate(secure_params[:current_password])
-          boolean = @user.update(
-             password: user_params[:password],
-             password_confirmation: user_params[:password_confirmation]
-           )
-          flash[:notice] = 'ログイン設定を更新しました'
-        else
-          boolean = false
-          flash[:notice] = '【！】パスワードが間違っています'
-        end
-      when 'profile'
-        if user_params[:avatar].present?
-          boolean = @user.update(
-             name: user_params[:name],
-             avatar: user_params[:avatar]
-           )
-        else
-          boolean = @user.update(
-            name: user_params[:name]
-          )
-        end
-        flash[:notice] = 'プロフィールを更新しました'
-      else
-        boolean = false
-        flash[:notice] = '【！】不正な入力です'
-    end
+  result = {boolean: nil, error_messages: nil}
 
-    if boolean
-      redirect_to mypage_path
+  case secure_params[:target]
+  when 'email'
+    if @user.authenticate(secure_params[:current_password])
+      result = User.validate_columns(email: user_params[:email])
+      if result[:boolean]
+        @user.email = user_params[:email]
+        @user.save(validate: false)
+        path = mypage_path
+        flash[:notice] = 'メールアドレスを更新しました'
+      else
+        path = edit_user_path(@user)
+        flash[:error_msgs] = result[:error_messages]
+      end
     else
-      flash[:error_msgs] = @user.errors.full_messages
-      redirect_to edit_user_path(@user)
+      path = edit_user_path(@user)
+      flash[:notice] = '【！】パスワードが間違っています'
     end
+  when 'password'
+    if @user.authenticate(secure_params[:current_password])
+      if @user.update(password: user_params[:password], password_confirmation: user_params[:password_confirmation])
+        path = mypage_path
+        flash[:notice] = 'パスワードを更新しました'
+      else
+        path = edit_user_path(@user)
+        flash[:error_msgs] = @user.errors.full_messages
+      end
+    else
+      path = edit_user_path(@user)
+      flash[:notice] = '【！】パスワードが間違っています'
+    end
+  when 'profile'
+    result = User.validate_columns(name: user_params[:name], avatar: user_params[:avatar])
+    if result[:boolean]
+      @user.name = user_params[:name]
+      @user.avatar = user_params[:avatar] if user_params[:avatar].present?
+      @user.save(validate: false)
+      path = mypage_path
+      flash[:notice] = 'プロフィールの編集をしました'
+    else
+      path = edit_profile_user_path(@user)
+      flash[:error_msgs] = result[:error_messages]
+    end
+  end
+
+  redirect_to path
+
+    # boolean = nil
+    # case secure_params[:target]
+    #   when 'email'
+    #     if @user.authenticate(secure_params[:current_password])
+    #       boolean = @user.update(
+    #          email: user_params[:email]
+    #        )
+    #       flash[:notice] = 'ログイン設定を更新しました'
+    #     else
+    #       boolean = false
+    #       flash[:notice] = '【！】パスワードが間違っています'
+    #     end
+    #   when 'password'
+    #     if @user.authenticate(secure_params[:current_password])
+    #       boolean = @user.update(
+    #          password: user_params[:password],
+    #          password_confirmation: user_params[:password_confirmation]
+    #        )
+    #       flash[:notice] = 'ログイン設定を更新しました'
+    #     else
+    #       boolean = false
+    #       flash[:notice] = '【！】パスワードが間違っています'
+    #     end
+    #   when 'profile'
+    #     if user_params[:avatar].present?
+    #       boolean = @user.update(
+    #         name: user_params[:name],
+    #         avatar: user_params[:avatar]
+    #       )
+    #     else
+    #       boolean = @user.update_attributes(
+    #         name: user_params[:name]
+    #       )
+    #     end
+    #     flash[:notice] = 'プロフィールを更新しました'
+    #   else
+    #     boolean = false
+    #     flash[:notice] = '【！】不正な入力です'
+    # end
+    #
+    # if boolean
+    #   redirect_to mypage_path
+    # else
+    #   flash[:error_msgs] = @user.errors.full_messages
+    #   redirect_to edit_user_path(@user)
+    # end
   end
 
   def edit_profile

@@ -17,11 +17,26 @@ class User < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
-  validates :password_confirmation, presence: true, on: :create
-  validates :password, presence: true, length: { minimum: 6 }, on: :create
+  # validates :password_confirmation, presence: true, length: { minimum: 6 }, on: :create
+  # validates :password, presence: true, length: { minimum: 6 }, on: :create
+  validates :password_confirmation, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }
+
+
+
   # validates :password_digest, presence: true, length: { minimum: 6 }
 
   validate :password_not_equal_to_email
+
+  def self.validate_columns(columns)
+    user = User.new(columns)
+    col_names = columns.keys.map(&:to_s)
+    user.valid?
+    user.errors.keys.each do |k|
+      user.errors.delete(k) unless col_names.include?(k.to_s)
+    end
+    {boolean: user.errors.empty?, error_messages: user.errors.full_messages}
+  end
 
   def create_notification_message!(current_user, message_id)
     notification = current_user.active_notifications.new(
@@ -36,6 +51,9 @@ class User < ApplicationRecord
   private
 
   def password_not_equal_to_email
-    errors.add(:password, ' : パスワードとメールアドレスは同じにすることはできません') if password&.eql?(email)
+    if password&.eql?(email)
+      errors.add(:email, 'はパスワードと同じにすることはできません')
+      errors.add(:password, 'はメールアドレスと同じにすることはできません')
+    end
   end
 end
